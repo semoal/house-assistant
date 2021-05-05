@@ -1,11 +1,19 @@
 import * as React from 'react';
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
-const TodosScreen = ({todos, fetchTodos}) => {
+const TodosScreen = () => {
+  const dispatch = useDispatch()
+  const todos = useSelector((state) => state.todos)
+
   const [isLoading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+
+    async function fetchTodos() {
+      await dispatch.todos.loadTodos();
+    }
+
     fetchTodos();
     setLoading(false);
   }, [])
@@ -25,12 +33,4 @@ const TodosScreen = ({todos, fetchTodos}) => {
   );
 }
 
-const mapState = (state) => ({
-  todos: state.todos.todos,
-})
-
-const mapDispatch = (dispatch) => ({
-  fetchTodos: dispatch.todos.fetchTodos,
-})
-
-export default connect(mapState, mapDispatch)(TodosScreen)
+export default TodosScreen;
