@@ -6,7 +6,7 @@ import * as models from './models/models'
 
 import TodosScreen from './screens/TodosScreen'
 
-const store = init({
+export const store = init({
   models,
   plugins: [selectPlugin()],
 })
