@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+import { todos } from '../models/models'
 
 const TodosScreen = () => {
   const dispatch = useDispatch()
   const todos = useSelector((state) => state.todos)
+
+  const eventTodosSelector = store.select.todos.eventTodos()
+  eventTodosSelector(todos)
 
   const [isLoading, setLoading] = React.useState(true);
 
@@ -14,7 +18,7 @@ const TodosScreen = () => {
       await dispatch.todos.loadTodos();
     }
 
-    fetchTodos();
+    // fetchTodos();
     setLoading(false);
   }, [])
 
@@ -24,7 +28,7 @@ const TodosScreen = () => {
     <View style={{ flex: 1, padding: 24 }}>
       {isLoading ? <ActivityIndicator/> :
         (<FlatList
-          data={todos}
+          data={eventTodosSelector}
           keyExtractor={({ id }) => id.toString()}
           renderItem={renderItems}
         />)
